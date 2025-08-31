@@ -26,6 +26,7 @@ model User {
   email String @unique
   name String
   password String
+  votes Vote[]
   createdAt DateTime @default(now())
 }
 
@@ -36,26 +37,30 @@ enum Choice {
 
 model Topic {
   id Int @id @default(autoincrement())
-  day String
+  day DateTime @db.Date
   title String
   question String
-  optionsA String
-  optionsB String
+  optionA String
+  optionB String
   openedAt DateTime @default(now())
+  durationSec Int @default(300)
   votes Vote[]
 
-  @@unique([day, title])
+  @@unique([day])
 }
 
 model Vote {
   id Int @id @default(autoincrement())
   userId String
+  user User @relation(fields: [userId], references: [id])
+  
   topicId Int
-  choice Choice
-  createdAt DateTime @default(now())
   topic Topic @relation(fields: [topicId], references: [id])
 
+  choice Choice
+  createdAt DateTime @default(now())
+
   @@unique([userId, topicId])
-  @@index([topicId])
+  @@index([topicId, choice])
   @@index([userId])
 }
