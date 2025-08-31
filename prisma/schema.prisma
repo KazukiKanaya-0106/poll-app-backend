@@ -37,13 +37,13 @@ enum Choice {
 
 model Topic {
   id Int @id @default(autoincrement())
-  day DateTime @db.Date
+  day DateTime @db.Date @default(now())
   title String
   question String
   optionA String
   optionB String
   openedAt DateTime @default(now())
-  durationSec Int @default(300)
+  closed Boolean @default(false)
   votes Vote[]
 
   @@unique([day])

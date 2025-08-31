@@ -1,17 +1,13 @@
 import express from "express";
-import type { Application } from "express";
 import cors from "cors";
-import { authRoutes } from "./routes/auth.route";
-import { userRoute } from "./routes/user.route";
+import { apiRouter } from "./routers/api.router";
 
-const app: Application = express();
+const app = express();
 app.use(express.json());
 app.use(cors());
+app.use("/api", apiRouter);
 
-app.use("/auth", authRoutes);
-app.use("/user", userRoute);
-
-app.get("/", (_req, res) => {
+app.get("/api", (_req, res) => {
   res.send("Welcome to the API!");
 });
 

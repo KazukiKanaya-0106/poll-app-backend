@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "public"."Topic" ALTER COLUMN "day" SET DEFAULT CURRENT_TIMESTAMP;

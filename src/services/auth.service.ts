@@ -32,7 +32,7 @@ export const login = async (data: Login): Promise<{ user: User; token: string }>
 export const signToken = (userId: string): string => {
   const JWT_SECRET: string | undefined = process["env"]["JWT_SECRET"];
   if (JWT_SECRET === undefined) throw new Error("JWT_SECRET is not defined");
-  
+
   return jwt.sign({ sub: userId }, JWT_SECRET, { expiresIn: "1d" });
 };
 
