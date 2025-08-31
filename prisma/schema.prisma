@@ -21,11 +21,41 @@ generator zod {
   prismaClientImportPath = "@prisma/client" // import元を指定
 }
 
-
 model User {
   id String @id @default(uuid())
   email String @unique
   name String
   password String
   createdAt DateTime @default(now())
+}
+
+enum Choice {
+  A
+  B
+}
+
+model Topic {
+  id Int @id @default(autoincrement())
+  day String
+  title String
+  question String
+  optionsA String
+  optionsB String
+  openedAt DateTime @default(now())
+  votes Vote[]
+
+  @@unique([day, title])
+}
+
+model Vote {
+  id Int @id @default(autoincrement())
+  userId String
+  topicId Int
+  choice Choice
+  createdAt DateTime @default(now())
+  topic Topic @relation(fields: [topicId], references: [id])
+
+  @@unique([userId, topicId])
+  @@index([topicId])
+  @@index([userId])
 }
