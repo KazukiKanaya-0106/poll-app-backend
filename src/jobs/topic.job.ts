@@ -1,5 +1,6 @@
 import schedule from "node-schedule";
 import { closeTopic, getTopicDraft, setTopic } from "../services/topic.service";
+import { TopicDraft } from "../schemas/topic.schema";
 
 const OPEN_TOPIC_WINDOW_MS = Number(process.env["OPEN_TOPIC_WINDOW_MS"] || 5 * 60 * 1000);
 
@@ -11,7 +12,8 @@ export const scheduleTopicJob = () => {
   });
 };
 
-const scheduleTopicLifecycleJob = () => {
+const scheduleTopicLifecycleJob = async () => {
+  const topicDraft: TopicDraft = await getTopicDraft();
   const hour = Math.floor(Math.random() * 24);
   const minute = Math.floor(Math.random() * 60);
   const second = Math.floor(Math.random() * 60);
@@ -21,7 +23,6 @@ const scheduleTopicLifecycleJob = () => {
 
   schedule.scheduleJob(cron, async () => {
     console.log(`Running generated topic job at ${hour}:${minute}:${second}`);
-    const topicDraft = await getTopicDraft();
     const topic = await setTopic(topicDraft);
     const openedAt = new Date();
     console.log(`Today's topic set: ${topic.title}`);

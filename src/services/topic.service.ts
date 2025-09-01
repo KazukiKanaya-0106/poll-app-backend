@@ -8,7 +8,11 @@ import {
   findTopicById,
   updateTopic,
 } from "../repositories/topic.repository";
-import { CreateVote, Result, TopicDraft } from "../schemas/topic.schema";
+import { CreateVote, Result, TopicDraft, topicDraftSchema } from "../schemas/topic.schema";
+import { ChatMessage } from "../schemas/llm.schema";
+import { chatLLM, coerceJSON } from "./llm.service";
+import { SYSTEM_NORMAL, USER_NORMAL } from "../prompts/normal";
+import { SYSTEM_EDGY, USER_EDGY } from "../prompts/edgy";
 
 export const setTopic = async (data: TopicDraft): Promise<Topic> => {
   return await createTopic({
@@ -57,12 +61,21 @@ export const getResult = async (topicId: number): Promise<Result> => {
 };
 
 export const getTopicDraft = async (): Promise<TopicDraft> => {
-  return {
-    title: "今日のVS",
-    question: "AとBどっち？",
-    optionA: "からあげ",
-    optionB: "カレー",
-  };
+  const profile = process.env["PROMPT_PROFILE"] || "normal";
+  const messages: ChatMessage[] = [
+    { role: "system", content: profile === "normal" ? SYSTEM_NORMAL : SYSTEM_EDGY },
+    { role: "user", content: profile === "normal" ? USER_NORMAL : USER_EDGY },
+  ];
+  const content: string = await chatLLM(messages);
+  const json = coerceJSON<unknown>(content);
+  const parsed = topicDraftSchema.safeParse(json);
+
+  if (!parsed.success) {
+    const detail = parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join(", ");
+    throw new Error(`Invalid topic draft: ${detail}`);
+  }
+
+  return parsed.data;
 };
 
 export const closeTopic = async (topicId: number): Promise<void> => {

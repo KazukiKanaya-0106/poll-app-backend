@@ -1,7 +1,7 @@
 import { Topic, Vote } from "../generated/zod";
 import { ChoiceType } from "../generated/zod/inputTypeSchemas/ChoiceSchema";
 import { CreateTopic, CreateVote } from "../schemas/topic.schema";
-import { prisma } from "./prisma";
+import { prisma } from "../clients/prisma.client";
 
 export const createVote = async (data: CreateVote): Promise<Vote> => {
   return await prisma.vote.create({

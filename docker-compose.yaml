@@ -1,16 +1,43 @@
-version: "3.9"
-
 services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: vs
-    ports:
-      - "5432:5432"
-    volumes:
-      - db_data:/var/lib/postgresql/data
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports: ["5432:5432"]
+    volumes: ["db_data:/var/lib/postgresql/data"]
+
+  ollama:
+    image: ollama/ollama:latest
+    ports: ["11434:11434"]
+    volumes: ["ollama:/root/.ollama"]
+    environment:
+      OLLAMA_KEEP_ALIVE: ${OLLAMA_KEEP_ALIVE}
+    gpus: all
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 5s
+      timeout: 5s
+      start_period: 30s
+      retries: 60
+
+  init-pull:
+    image: ollama/ollama:latest
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: ${OLLAMA_BASE}
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      set -e;
+      echo "[init-pull] ollama pull ${MODEL}";
+      ollama pull ${MODEL};
+      echo "[init-pull] done";
+    restart: "no"
+# docker exec -it backend-ollama-1 ollama pull gpt-oss:20b
 
 volumes:
   db_data:
+  ollama:
