@@ -1,6 +1,6 @@
 import { User } from "../generated/zod";
-import { CreateUser } from "../schemas/auth.schema";
-import { prisma } from "../clients/prisma.client";
+import { CreateUser } from "../schemas/auth";
+import { prisma } from "../clients/prisma";
 
 export const createUser = async (data: CreateUser): Promise<User> => {
   return await prisma.user.create({

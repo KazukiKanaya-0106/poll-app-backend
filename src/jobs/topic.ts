@@ -1,6 +1,6 @@
 import schedule from "node-schedule";
-import { closeTopic, getTopicDraft, setTopic } from "../services/topic.service";
-import { TopicDraft } from "../schemas/topic.schema";
+import { closeTopic, getTopicDraft, setTopic } from "../services/topic";
+import { TopicDraft } from "../schemas/topic";
 
 const OPEN_TOPIC_WINDOW_MS = Number(process.env["OPEN_TOPIC_WINDOW_MS"] || 5 * 60 * 1000);
 

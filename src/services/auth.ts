@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { Login, Signup, TokenPayload } from "../schemas/auth.schema";
+import { Login, Signup, TokenPayload } from "../schemas/auth";
 import { User } from "../generated/zod";
-import { createUser, findUserByEmail } from "../repositories/user.repository";
+import { createUser, findUserByEmail } from "../repositories/user";
 
 export const signup = async (data: Signup): Promise<{ user: User; token: string }> => {
   const exists: User | null = await findUserByEmail(data.email);

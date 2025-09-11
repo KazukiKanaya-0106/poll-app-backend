@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { getResult, getTodayTopic, voteOnTopic } from "../services/topic.service";
+import { getResult, getTodayTopic, voteOnTopic } from "../services/topic";
 import { Topic, Vote } from "../generated/zod";
-import { Result } from "../schemas/topic.schema";
+import { Result } from "../schemas/topic";
 
 export const todayController = async (_req: Request, res: Response) => {
   const topic: Topic = await getTodayTopic();

@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import { verifyToken } from "../services/auth.service";
+import { verifyToken } from "../services/auth";
 
 export const authenticate: RequestHandler = (req, res, next) => {
   const token = req.headers["authorization"]?.split(" ")[1];

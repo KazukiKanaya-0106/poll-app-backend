@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { authRouter } from "./auth.router";
-import { userRouter } from "./user.router";
-import { topicRouter } from "./topic.router";
-import { getTopicDraft } from "../services/topic.service";
+import { authRouter } from "./auth";
+import { userRouter } from "./user";
+import { topicRouter } from "./topic";
+import { getTopicDraft } from "../services/topic";
 
 export const apiRouter = Router();
 apiRouter.use("/auth", authRouter);

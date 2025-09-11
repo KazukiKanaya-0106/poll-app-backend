@@ -7,10 +7,10 @@ import {
   findTopicByDate,
   findTopicById,
   updateTopic,
-} from "../repositories/topic.repository";
-import { CreateVote, Result, TopicDraft, topicDraftSchema } from "../schemas/topic.schema";
-import { ChatMessage } from "../schemas/llm.schema";
-import { chatLLM, coerceJSON } from "./llm.service";
+} from "../repositories/topic";
+import { CreateVote, Result, TopicDraft, topicDraftSchema } from "../schemas/topic";
+import { ChatMessage } from "../schemas/llm";
+import { chatLLM, coerceJSON } from "./llm";
 import { SYSTEM_NORMAL, USER_NORMAL } from "../prompts/normal";
 import { SYSTEM_EDGY, USER_EDGY } from "../prompts/edgy";
 

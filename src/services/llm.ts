@@ -1,5 +1,5 @@
-import { ollama } from "../clients/ollama.client";
-import { ChatMessage } from "../schemas/llm.schema";
+import { ollama } from "../clients/ollama";
+import { ChatMessage } from "../schemas/llm";
 
 export const chatLLM = async (messages: ChatMessage[]): Promise<string> => {
   const response = await ollama.chat({

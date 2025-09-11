@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { resultController, todayController, voteController } from "../controllers/topic.controller";
-import { authenticate } from "../middlewares/auth.middleware";
+import { resultController, todayController, voteController } from "../controllers/topic";
+import { authenticate } from "../middlewares/auth";
 
 export const topicRouter = Router();
 topicRouter.get("/today", authenticate, todayController);
